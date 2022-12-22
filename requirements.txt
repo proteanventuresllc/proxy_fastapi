@@ -1,0 +1,4 @@
+fastapi===0.88.0
+httpx===0.23.1
+tenacity===8.1.0
+uvicorn===0.20.0

@@ -1,0 +1,9 @@
+- Name: Build and push docker image to GCR
+  uses: raccoondev/push-docker-gcr
+  with:
+    gcr_host: gcr.io
+    image_name: proxy_servise
+    image_tag: latest
+    env:
+      GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
+      GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}

@@ -1,11 +1,12 @@
 import httpx
 from starlette.background import BackgroundTask
+from starlette.exceptions import HTTPException
 from starlette.responses import StreamingResponse
 
-from .retry import DeadUpstreamError, retry_on_dead_upstream
+from .retry import retry_on_dead_upstream
 from .settings import settings
 
-RETRY_CODES = [503, 500];
+RETRY_CODES = settings.retry_codes;
 
 _client = httpx.AsyncClient(base_url=settings.target_host)
 
@@ -31,7 +32,7 @@ async def client(
     response = await _client.send(request, stream=True)
 
     if response.status_code in RETRY_CODES:
-        raise DeadUpstreamError
+        raise HTTPException(response.status_code, detail="Can't resolve request")
 
     return StreamingResponse(
         response.aiter_raw(),

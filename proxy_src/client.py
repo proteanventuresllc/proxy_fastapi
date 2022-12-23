@@ -5,7 +5,7 @@ from starlette.responses import StreamingResponse
 from .retry import DeadUpstreamError, retry_on_dead_upstream
 from .settings import settings
 
-RETRY_CODE = 503;
+RETRY_CODES = [503, 500];
 
 _client = httpx.AsyncClient(base_url=settings.target_host)
 
@@ -30,7 +30,7 @@ async def client(
     )
     response = await _client.send(request, stream=True)
 
-    if response.status_code == RETRY_CODE:
+    if response.status_code in RETRY_CODES:
         raise DeadUpstreamError
 
     return StreamingResponse(

@@ -8,7 +8,7 @@ from .settings import settings
 
 RETRY_CODES = settings.retry_codes;
 
-_client = httpx.AsyncClient(base_url=settings.target_host)
+_client = httpx.AsyncClient(base_url=settings.target_host, timeout=None)
 
 
 
